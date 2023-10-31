@@ -12,7 +12,7 @@ RUN yarn run build
 
 #prod stage
 
-FROM node:17-alpine
+FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
