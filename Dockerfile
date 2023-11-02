@@ -30,4 +30,3 @@ RUN rm package*.json
 EXPOSE 5000
 
 CMD ["node","dist/main.ts"]
-

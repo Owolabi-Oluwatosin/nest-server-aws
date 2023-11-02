@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  backend:
+    build: ./
+    container_name: nestjs_api
+    environment:
+      - PORT=5000
+      - USER_NAME=Odevtools007
+      - DB_PASSWORD=QNQczaC83JTeI39a
+      - DB_NAME=nestDB
+    ports:
+      - 5000:5000
+    networks:
+      - nestjs_network
+
+networks:
+  nestjs_network:
+    driver: bridge
+# version: '3'
+# services:
+#   nest_api:
+#     environment:
+#       - NODE_ENV=development
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     volumes:
+#       - ./:/usr/app
+#     container_name: nest_api
+#     expose:
+#       - '5000'
+#     ports:
+#       - '5000:5000'
+#     network_mode: host
+

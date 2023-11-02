@@ -1,23 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+const port = process.env.PORT || 6000;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: 'https://nest-client-daniel.vercel.app',
-    methods: ['GET, HEAD, OPTION, PATCH, POST, DELETE'],
-    allowedHeaders: [
-      'Origin',
-      'X-Requested-With',
-      'Content-Type',
-      'Accept',
-      'X-Access-Token',
-      'Authorization',
-      'X-Api-Key',
-    ],
-    credentials: true,
-    preflightContinue: false,
-  });
-  await app.listen(5000);
+  app.enableCors();
+  await app.listen(port, '0.0.0.0');
 }
-bootstrap();
+
+bootstrap()
+  .catch((error) => console.error(error))
+  .then(() => console.log(`Listening on http://localhost:${port}`));
