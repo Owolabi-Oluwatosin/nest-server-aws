@@ -1,32 +1,30 @@
-FROM node:16-alpine AS build
+FROM node:16-alpine AS development
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install
+RUN yarn add glob rimraf
+
+RUN yarn install --only=development
 
 COPY . .
 
-RUN yarn run build 
+RUN yarn run build
 
-#prod stage
-
-FROM node:16-alpine
-
-WORKDIR /usr/src/app
+FROM node:16-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-COPY --from=build /usr/src/app/dist ./dist
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN yarn install --only=production
 
-RUN rm package*.json
+COPY . .
 
-EXPOSE 5000
+COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node","dist/main.ts"]
+CMD ["node", "dist/main"]

@@ -1,35 +1,40 @@
 version: '3.8'
+
 services:
-  backend:
-    build: ./
-    container_name: nestjs_api
-    environment:
-      - PORT=5000
-      - USER_NAME=Odevtools007
-      - DB_PASSWORD=QNQczaC83JTeI39a
-      - DB_NAME=nestDB
+  dev:
+    container_name: nestjs_api_dev
+    image: nestjs-api-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: yarn run start:debug
     ports:
       - 5000:5000
+      - 9229:9229
     networks:
-      - nestjs_network
+      - nesjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+  prod:
+    container_name: nestjs_api_prod
+    image: nestjs-api-prod:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: yarn run start:prod
+    ports:
+      - 5000:5000
+      - 9229:9229
+    networks:
+      - nesjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
 
 networks:
-  nestjs_network:
-    driver: bridge
-# version: '3'
-# services:
-#   nest_api:
-#     environment:
-#       - NODE_ENV=development
-#     build:
-#       context: ./
-#       dockerfile: Dockerfile
-#     volumes:
-#       - ./:/usr/app
-#     container_name: nest_api
-#     expose:
-#       - '5000'
-#     ports:
-#       - '5000:5000'
-#     network_mode: host
-
+  nesjs-network:
